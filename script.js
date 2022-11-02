@@ -1,5 +1,16 @@
 //You can edit ALL of the code here
 let body = document.querySelector("body");
+let searchSection = document.createElement("section");
+body.appendChild(searchSection);
+let searchInput = document.createElement("input");
+let searchBtn = document.createElement("button");
+searchSection.appendChild(searchInput);
+searchSection.appendChild(searchBtn);
+searchSection.style.cssText =
+  "margin-bottom: 10px;display:flex; align-content:left";
+
+searchBtn.innerText = "Search";
+searchInput.style.cssText = "width: 250px; height:40px; font-size:16px";
 
 function setup() {
   const allEpisodes = getAllEpisodes();
@@ -11,8 +22,9 @@ function makePageForEpisodes(episodeList) {
   rootElem.textContent = `Got ${episodeList.length} episode(s)`;
 }
 let episodesMain = document.getElementById("episodes-main");
+body.appendChild(episodesMain);
 episodesMain.style.cssText =
-  "background-color:silver; display:flex ; width:100% ; height: 100%; flex-wrap: wrap; padding: auto";
+  "background-color:silver; display:flex ; width:100% ; height: 100%; flex-wrap: wrap; padding: auto; justify-content:space-around";
 
 let footer = document.createElement("footer");
 body.appendChild(footer);
@@ -34,7 +46,7 @@ for (let i = 0; i < 73; i++) {
   let paragraphOfEpisode = document.createElement("article");
   divOfEpisodes.appendChild(paragraphOfEpisode);
   divOfEpisodes.style.cssText =
-    "background-color:white ; width:350px ; height: 600px; margin:13px;border-radius: 3%;";
+    "background-color:white ; width:350px ; height: 600px; margin:8px;border-radius: 3%;";
   paragraphOfEpisode.style.cssText = "margin:20px; font-size:18px";
   titleButOfEpisode.style.cssText =
     "width:350px ; margin-top: 0px;  height: 80px ;border-radius: 3% ; font-weight: bold; font-size:20px";
