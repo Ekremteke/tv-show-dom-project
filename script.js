@@ -1,4 +1,6 @@
 //You can edit ALL of the code here
+let body = document.querySelector("body");
+
 function setup() {
   const allEpisodes = getAllEpisodes();
   makePageForEpisodes(allEpisodes);
@@ -12,6 +14,14 @@ let episodesMain = document.getElementById("episodes-main");
 episodesMain.style.cssText =
   "background-color:silver; display:flex ; width:100% ; height: 100%; flex-wrap: wrap; padding: auto";
 
+let footer = document.createElement("footer");
+body.appendChild(footer);
+footer.innerHTML =
+  "<p> The data has (originally) came from <a href='https://www.tvmaze.com/api#licensing'> TVMaze.com</a>See <a href='https://www.tvmaze.com/api#licensing'> tvmaze.com/api#licensing</a>.</p>";
+function forEpisodeNumber(x) {
+  return x > 9 ? x : "0" + x;
+}
+
 for (let i = 0; i < 73; i++) {
   let divOfEpisodes = document.createElement("div");
   episodesMain.appendChild(divOfEpisodes);
@@ -21,16 +31,22 @@ for (let i = 0; i < 73; i++) {
   divOfEpisodes.appendChild(titleButOfEpisode);
   let imgOfEpisode = document.createElement("img");
   divOfEpisodes.appendChild(imgOfEpisode);
-  let paragraphOfEpisode = document.createElement("p");
+  let paragraphOfEpisode = document.createElement("article");
   divOfEpisodes.appendChild(paragraphOfEpisode);
   divOfEpisodes.style.cssText =
-    "background-color:white ; width:300px ; height: 600px; margin:16px;border-radius: 3%;";
-  paragraphOfEpisode.style.cssText = "margin:20px";
+    "background-color:white ; width:350px ; height: 600px; margin:13px;border-radius: 3%;";
+  paragraphOfEpisode.style.cssText = "margin:20px; font-size:18px";
   titleButOfEpisode.style.cssText =
-    "width:300px ; margin-top: 0px;  height: 80px ;border-radius: 3%";
+    "width:350px ; margin-top: 0px;  height: 80px ;border-radius: 3% ; font-weight: bold; font-size:20px";
   imgOfEpisode.style.cssText =
-    "width:240px ; height: 140px; margin: 30px 30px Auto 30px";
+    "width:280px ; height: 150px; margin: 30px 35px Auto 35px";
   imgOfEpisode.setAttribute("src", getAllEpisodes()[i].image.medium);
+  titleButOfEpisode.innerText = `${
+    getAllEpisodes()[i].name
+  } - S${forEpisodeNumber(getAllEpisodes()[i].season)}E${forEpisodeNumber(
+    getAllEpisodes()[i].number
+  )}`;
+  paragraphOfEpisode.innerHTML = `${getAllEpisodes()[i].summary}`;
 }
 
 window.onload = setup;
