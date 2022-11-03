@@ -15,3 +15,10 @@ input{
 .hide{
   display: none;
 }
+.search-wrapper {
+  display: flex;
+
+}
+#select{
+  width: 400px;
+}
