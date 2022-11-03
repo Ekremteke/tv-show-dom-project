@@ -3,3 +3,15 @@
 
 
 }
+#search {
+  font-size: 18px;
+
+}
+input{
+  font-size: 20px;
+  height: 40px;
+}
+
+.hide{
+  display: none;
+}

@@ -1,16 +1,8 @@
 //You can edit ALL of the code here
 let body = document.querySelector("body");
-let searchSection = document.createElement("section");
-body.appendChild(searchSection);
-let searchInput = document.createElement("input");
-let searchBtn = document.createElement("button");
-searchSection.appendChild(searchInput);
-searchSection.appendChild(searchBtn);
-searchSection.style.cssText =
-  "margin-bottom: 10px;display:flex; align-content:left";
-
-searchBtn.innerText = "Search";
-searchInput.style.cssText = "width: 250px; height:40px; font-size:16px";
+let allEpisodes = getAllEpisodes();
+const searchInput = document.querySelector("input");
+console.log(searchInput);
 
 function setup() {
   const allEpisodes = getAllEpisodes();
@@ -22,23 +14,19 @@ function makePageForEpisodes(episodeList) {
   rootElem.textContent = `Got ${episodeList.length} episode(s)`;
 }
 let episodesMain = document.getElementById("episodes-main");
+
 body.appendChild(episodesMain);
+
 episodesMain.style.cssText =
   "background-color:silver; display:flex ; width:100% ; height: 100%; flex-wrap: wrap; padding: auto; justify-content:space-around";
 
-let footer = document.createElement("footer");
-body.appendChild(footer);
-footer.innerHTML =
-  "<p> The data has (originally) came from <a href='https://www.tvmaze.com/api#licensing'> TVMaze.com</a>See <a href='https://www.tvmaze.com/api#licensing'> tvmaze.com/api#licensing</a>.</p>";
 function forEpisodeNumber(x) {
   return x > 9 ? x : "0" + x;
 }
 
-for (let i = 0; i < 73; i++) {
+let episodes = allEpisodes.map((episode) => {
   let divOfEpisodes = document.createElement("div");
   episodesMain.appendChild(divOfEpisodes);
-  divOfEpisodes.id = i;
-  divOfEpisodes.className = "episode";
   let titleButOfEpisode = document.createElement("button");
   divOfEpisodes.appendChild(titleButOfEpisode);
   let imgOfEpisode = document.createElement("img");
@@ -52,16 +40,129 @@ for (let i = 0; i < 73; i++) {
     "width:350px ; margin-top: 0px;  height: 80px ;border-radius: 3% ; font-weight: bold; font-size:20px";
   imgOfEpisode.style.cssText =
     "width:280px ; height: 150px; margin: 30px 35px Auto 35px";
-  imgOfEpisode.setAttribute("src", getAllEpisodes()[i].image.medium);
-  titleButOfEpisode.innerText = `${
-    getAllEpisodes()[i].name
-  } - S${forEpisodeNumber(getAllEpisodes()[i].season)}E${forEpisodeNumber(
-    getAllEpisodes()[i].number
-  )}`;
-  paragraphOfEpisode.innerHTML = `${getAllEpisodes()[i].summary}`;
-}
+  imgOfEpisode.setAttribute("src", episode.image.medium);
+  titleButOfEpisode.innerText = `${episode.name} - S${forEpisodeNumber(
+    episode.season
+  )}E${forEpisodeNumber(episode.number)}`;
+  paragraphOfEpisode.innerHTML = `${episode.summary}`;
+});
+
+let episodesMainNew = document.getElementById("episodes-filter");
+body.appendChild(episodesMainNew);
+episodesMainNew.style.cssText =
+  "background-color:silver; display:flex ; width:100% ; height: 100%; flex-wrap: wrap; padding: auto; justify-content:space-around";
+
+searchInput.addEventListener("input", (e) => {
+  const value = e.target.value.toLowerCase();
+  console.log(value);
+  episodesMain.style.cssText = "display:none";
+
+  let filterOne = allEpisodes.filter((a) => {
+    return (
+      a.name.toLowerCase().includes(value) ||
+      a.summary.toLowerCase().includes(value)
+    );
+  });
+  console.log(filterOne);
+
+  for (
+    let filterEpisode = 0;
+    filterEpisode < filterOne.length;
+    filterEpisode++
+  ) {
+    let divOfEpisodesNew = document.createElement("div");
+    episodesMainNew.appendChild(divOfEpisodesNew);
+    let titleButOfEpisode2 = document.createElement("button");
+    divOfEpisodesNew.appendChild(titleButOfEpisode2);
+    let imgOfEpisode2 = document.createElement("img");
+    divOfEpisodesNew.appendChild(imgOfEpisode2);
+    let paragraphOfEpisode2 = document.createElement("article");
+    divOfEpisodesNew.appendChild(paragraphOfEpisode2);
+    divOfEpisodesNew.style.cssText =
+      "background-color:white ; width:350px ; height: 600px; margin:8px;border-radius: 3%;";
+    paragraphOfEpisode2.style.cssText = "margin:20px; font-size:18px";
+    titleButOfEpisode2.style.cssText =
+      "width:350px ; margin-top: 0px;  height: 80px ;border-radius: 3% ; font-weight: bold; font-size:20px";
+    imgOfEpisode2.style.cssText =
+      "width:280px ; height: 150px; margin: 30px 35px Auto 35px";
+    imgOfEpisode2.setAttribute("src", filterOne[filterEpisode].image.medium);
+    titleButOfEpisode2.innerText = `${
+      filterOne[filterEpisode].name
+    } - S${forEpisodeNumber(
+      filterOne[filterEpisode].season
+    )}E${forEpisodeNumber(filterOne[filterEpisode].number)}`;
+    paragraphOfEpisode2.innerHTML = `${filterOne[filterEpisode].summary}`;
+  }
+});
+// ) for (let i = 0; i < allEpisodes.length; i++) {
+//   let divOfEpisodes = document.createElement("div");
+//   episodesMain.appendChild(divOfEpisodes);
+//   divOfEpisodes.id = i;
+//   divOfEpisodes.className = "episode";
+//   let titleButOfEpisode = document.createElement("button");
+//   divOfEpisodes.appendChild(titleButOfEpisode);
+//   let imgOfEpisode = document.createElement("img");
+//   divOfEpisodes.appendChild(imgOfEpisode);
+//   let paragraphOfEpisode = document.createElement("article");
+//   divOfEpisodes.appendChild(paragraphOfEpisode);
+//   divOfEpisodes.style.cssText =
+//     "background-color:white ; width:350px ; height: 600px; margin:8px;border-radius: 3%;";
+//   paragraphOfEpisode.style.cssText = "margin:20px; font-size:18px";
+//   titleButOfEpisode.style.cssText =
+//     "width:350px ; margin-top: 0px;  height: 80px ;border-radius: 3% ; font-weight: bold; font-size:20px";
+//   imgOfEpisode.style.cssText =
+//     "width:280px ; height: 150px; margin: 30px 35px Auto 35px";
+//   imgOfEpisode.setAttribute("src", getAllEpisodes()[i].image.medium);
+//   titleButOfEpisode.innerText = `${
+//     getAllEpisodes()[i].name
+//   } - S${forEpisodeNumber(getAllEpisodes()[i].season)}E${forEpisodeNumber(
+//     getAllEpisodes()[i].number
+//   )}`;
+//   paragraphOfEpisode.innerHTML = `${getAllEpisodes()[i].summary}`;
+// }
+
+// let episodesMainNew = document.createElement("div");
+// body.appendChild(episodesMainNew);
+// episodesMainNew.style.cssText =
+//   "background-color:silver; display:flex ; width:100% ; height: 100%; flex-wrap: wrap; padding: auto; justify-content:space-around";
+// function newEpisodes() {
+//   resultOfSearch.innerHTML = document.querySelector("input").value;
+
+//   episodesMain.style.cssText = "display:none";
+
+//   for (let i = 0; i < newResultArr.length; i++) {
+//     let divOfEpisodes = document.createElement("div");
+//     episodesMainNew.appendChild(divOfEpisodes);
+//     divOfEpisodes.id = i;
+//     divOfEpisodes.className = "episode";
+//     let titleButOfEpisode = document.createElement("button");
+//     divOfEpisodes.appendChild(titleButOfEpisode);
+//     let imgOfEpisode = document.createElement("img");
+//     divOfEpisodes.appendChild(imgOfEpisode);
+//     let paragraphOfEpisode = document.createElement("article");
+//     divOfEpisodes.appendChild(paragraphOfEpisode);
+//     divOfEpisodes.style.cssText =
+//       "background-color:white ; width:350px ; height: 600px; margin:8px;border-radius: 3%;";
+//     paragraphOfEpisode.style.cssText = "margin:20px; font-size:18px";
+//     titleButOfEpisode.style.cssText =
+//       "width:350px ; margin-top: 0px;  height: 80px ;border-radius: 3% ; font-weight: bold; font-size:20px";
+//     imgOfEpisode.style.cssText =
+//       "width:280px ; height: 150px; margin: 30px 35px Auto 35px";
+//     imgOfEpisode.setAttribute("src", newResultArr[i].image.medium);
+//     titleButOfEpisode.innerText = `${
+//       newResultArr[i].name
+//     } - S${forEpisodeNumber(newResultArr[i].season)}E${forEpisodeNumber(
+//       newResultArr[i].number
+//     )}`;
+//     paragraphOfEpisode.innerHTML = `${newResultArr[i].summary}`;
+//   }
+// }
 
 window.onload = setup;
+let footer = document.createElement("footer");
+body.appendChild(footer);
+footer.innerHTML =
+  "<p> The data has (originally) came from <a href='https://www.tvmaze.com/api#licensing'> TVMaze.com</a>See <a href='https://www.tvmaze.com/api#licensing'> tvmaze.com/api#licensing</a>.</p>";
 
 // function getAllEpisodes() {
 //   return [
