@@ -4,16 +4,7 @@ let allEpisodes = getAllEpisodes();
 const searchInput = document.querySelector("input");
 let result = document.getElementById("result");
 console.log(searchInput);
-
-function setup() {
-  const allEpisodes = getAllEpisodes();
-  makePageForEpisodes(allEpisodes);
-}
-
-function makePageForEpisodes(episodeList) {
-  const rootElem = document.getElementById("root");
-  rootElem.textContent = `Got ${episodeList.length} episode(s)`;
-}
+let select = document.getElementById("select");
 let episodesMain = document.getElementById("episodes-main");
 
 body.appendChild(episodesMain);
@@ -25,27 +16,89 @@ function forEpisodeNumber(x) {
   return x > 9 ? x : "0" + x;
 }
 
-let episodes = allEpisodes.map((episode) => {
-  let divOfEpisodes = document.createElement("div");
-  episodesMain.appendChild(divOfEpisodes);
-  let titleButOfEpisode = document.createElement("button");
-  divOfEpisodes.appendChild(titleButOfEpisode);
-  let imgOfEpisode = document.createElement("img");
-  divOfEpisodes.appendChild(imgOfEpisode);
-  let paragraphOfEpisode = document.createElement("article");
-  divOfEpisodes.appendChild(paragraphOfEpisode);
-  divOfEpisodes.style.cssText =
-    "background-color:white ; width:350px ; height: 600px; margin:8px;border-radius: 3%;";
-  paragraphOfEpisode.style.cssText = "margin:20px; font-size:18px";
-  titleButOfEpisode.style.cssText =
-    "width:350px ; margin-top: 0px;  height: 80px ;border-radius: 3% ; font-weight: bold; font-size:20px";
-  imgOfEpisode.style.cssText =
-    "width:280px ; height: 150px; margin: 30px 35px Auto 35px";
-  imgOfEpisode.setAttribute("src", episode.image.medium);
-  titleButOfEpisode.innerText = `${episode.name} - S${forEpisodeNumber(
-    episode.season
-  )}E${forEpisodeNumber(episode.number)}`;
-  paragraphOfEpisode.innerHTML = `${episode.summary}`;
+function setup() {
+  const allEpisodes = getAllEpisodes();
+  makePageForEpisodes(allEpisodes);
+}
+
+function makePageForEpisodes(episodeList) {
+  const rootElem = document.getElementById("root");
+  rootElem.textContent = `Got ${episodeList.length} episode(s)`;
+  allEpisodes.map((episode) => {
+    let divOfEpisodes = document.createElement("div");
+    divOfEpisodes.className = "cards";
+    episodesMain.appendChild(divOfEpisodes);
+
+    let titleButOfEpisode = document.createElement("button");
+    divOfEpisodes.appendChild(titleButOfEpisode);
+
+    let tagName = document.createElement("a");
+    divOfEpisodes.appendChild(tagName);
+    let imgOfEpisode = document.createElement("img");
+    divOfEpisodes.appendChild(imgOfEpisode);
+    let paragraphOfEpisode = document.createElement("article");
+    divOfEpisodes.appendChild(paragraphOfEpisode);
+    divOfEpisodes.style.cssText =
+      "background-color:white ; width:350px ; height: 600px; margin:8px;border-radius: 3%;";
+    paragraphOfEpisode.style.cssText = "margin:20px; font-size:18px";
+    titleButOfEpisode.style.cssText =
+      "width:350px ; margin-top: 0px;  height: 80px ;border-radius: 3% ; font-weight: bold; font-size:20px";
+    imgOfEpisode.style.cssText =
+      "width:280px ; height: 150px; margin: 30px 35px Auto 35px";
+    imgOfEpisode.setAttribute("src", episode.image.medium);
+    let number = `S${forEpisodeNumber(episode.season)}E${forEpisodeNumber(
+      episode.number
+    )}`;
+    divOfEpisodes.id = number;
+    titleButOfEpisode.appendChild(tagName);
+    let episodeName = `${episode.name} `;
+    let title = (tagName.innerText = `${episodeName} - ${number}`);
+    paragraphOfEpisode.innerHTML = `${episode.summary}`;
+    let options = document.createElement("option");
+
+    select.appendChild(options);
+
+    options.setAttribute("value", `${number}`);
+
+    let hrefName = document.createElement("a");
+
+    options.appendChild(hrefName);
+
+    hrefName.setAttribute("href", `#${number}`);
+
+    hrefName.innerHTML = `${number} - ${episodeName}`;
+    tagName.id = number;
+    tagName.setAttribute("name", number);
+  });
+}
+
+const selectElement = document.querySelector("#select");
+// selectElement.addEventListener("change", (event) => {
+//   console.log(event.target.value);
+
+//   const cards = document.querySelectorAll(".cards");
+//   for (let card of cards) {
+//     if (card.id !== event.target.value) {
+//       card.style.cssText = "display : none";
+//     } else if (event.target.value == 1) {
+//       card.style.cssText = "display : flex";
+//     }
+//   }
+// });
+
+let episodesMainNew2 = document.getElementById("episodes-filter");
+body.appendChild(episodesMainNew2);
+episodesMainNew2.style.cssText =
+  "background-color:silver; display:flex ; width:100% ; height: 100%; flex-wrap: wrap; padding: auto; justify-content:space-around";
+
+selectElement.addEventListener("change", (event) => {
+  const value = event.target.value;
+  console.log(value);
+  allEpisodes.forEach((episode) => {
+    if (episode.id == event.target.value) {
+      makePageForEpisodes([episode]);
+    }
+  });
 });
 
 let episodesMainNew = document.getElementById("episodes-filter");
