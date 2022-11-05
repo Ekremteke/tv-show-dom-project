@@ -79,7 +79,7 @@ body.appendChild(episodesMainNew2);
 episodesMainNew2.style.cssText =
   "background-color:silver; display:flex ; width:100% ; height: 100%; flex-wrap: wrap; padding: auto; justify-content:space-around";
 const cards = document.querySelectorAll(".cards");
-selectElement.addEventListener("input", (event) => {
+selectElement.addEventListener("change", (event) => {
   const value = event.target.value;
   console.log(value);
   episodesMain.style.cssText = "display:none";
