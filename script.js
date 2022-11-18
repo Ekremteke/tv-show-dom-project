@@ -4,6 +4,7 @@ let container = document.getElementById("main-container");
 let episodesSelect = document.getElementById("episodes");
 let searchInput = document.getElementById("search-input");
 let resultOfSearch = document.getElementById("result");
+
 console.log(alShows);
 function forEpisodeNumber(x) {
   return x > 9 ? x : "0" + x;
@@ -116,30 +117,7 @@ function search(episodList) {
       " episodes";
   });
 }
-// **
-//Button add event listeners
-// **
 
-let buttonForShow = document.querySelectorAll(".buttonForCard");
-for (let j = 0; j < buttonForShow.length; j++) {
-  buttonForShow[j].addEventListener("click", () => {
-    url = `https://api.tvmaze.com/shows/${alShows[j].id}/episodes`;
-    fetch(url)
-      .then((response) => {
-        console.log(response);
-        return response.json();
-      })
-      .then((result) => {
-        console.log(result);
-        setUp(result);
-        select();
-        select(result);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  });
-}
 let showsSelect = document.getElementById("shows");
 for (let i = 0; i < alShows.length; i++) {
   let showOptions = document.createElement("option");
@@ -154,6 +132,9 @@ for (let i = 0; i < alShows.length; i++) {
 showsSelect.addEventListener("change", (event) => {
   if (event.target.value == 0) {
     setUp(alShows);
+    select(alShows);
+    search(alShows);
+    showNameButton();
   } else {
     fetch(event.target.value)
       .then((response) => {
@@ -171,6 +152,33 @@ showsSelect.addEventListener("change", (event) => {
       });
   }
 });
+// **
+//Button add event listeners
+// **
+function showNameButton() {
+  let buttonForShow = document.querySelectorAll(".buttonForCard");
+  for (let j = 0; j < buttonForShow.length; j++) {
+    buttonForShow[j].addEventListener("click", () => {
+      url = `https://api.tvmaze.com/shows/${alShows[j].id}/episodes`;
+      fetch(url)
+        .then((response) => {
+          console.log(response);
+          return response.json();
+        })
+        .then((result) => {
+          console.log(result);
+          setUp(result);
+          select(result);
+          search(result);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    });
+  }
+}
+showNameButton();
+
 //
 //
 //
