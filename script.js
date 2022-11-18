@@ -1,65 +1,112 @@
-function setup() {
-  const allEpisodes = getAllEpisodes();
-  makePageForEpisodes(allEpisodes);
+// function setup() {
+//   const allEpisodes = getAllEpisodes();
+//   makePageForEpisodes(allEpisodes);
+// }
+// window.onload = setup;
+// function makePageForEpisodes(episodeList) {
+//   const rootElem = document.getElementById("root");
+//   rootElem.textContent = `Got ${episodeList.length} episode(s)`;
+// }
+let url = ["https://api.tvmaze.com/shows/82/episodes"];
+let alShows = getAllShows();
+console.log(alShows);
+function forEpisodeNumber(x) {
+  return x > 9 ? x : "0" + x;
+}
+let container = document.getElementById("main-container");
+function setUp(array) {
+  array.forEach((x) => {
+    container.style.cssText = "display:flex";
+    let cards = document.createElement("div");
+
+    container.appendChild(cards);
+    cards.style.cssText =
+      "background-color:white ; width:350px ; height: 600px; margin:8px;border-radius: 3%";
+
+    let buttonForCard = document.createElement("button");
+    let imageForCard = document.createElement("img");
+    let paragraphForCard = document.createElement("p");
+    buttonForCard.setAttribute("class", "buttonForCard");
+
+    cards.setAttribute("class", "card");
+    cards.appendChild(buttonForCard);
+    cards.appendChild(imageForCard);
+    cards.appendChild(paragraphForCard);
+    let tagName = document.createElement("a");
+    if (array.length < 300) {
+      let number = `S${forEpisodeNumber(x.season)}E${forEpisodeNumber(
+        x.number
+      )}`;
+      x.id = number;
+      buttonForCard.appendChild(tagName);
+      let episodeName = `${x.name} `;
+      let title = (tagName.innerText = `${episodeName} - ${number}`);
+      tagName.innerHTML = title;
+    } else if (array.length > 300) {
+      tagName.innerText = x.name;
+    }
+    paragraphForCard.style.cssText = "margin:20px; font-size:18px";
+    buttonForCard.style.cssText =
+      "width:350px ; margin-top: 0px;  height: 80px ;border-radius: 3% ; font-weight: bold; font-size:20px";
+    imageForCard.style.cssText =
+      "width:280px ; height: 150px; margin: 30px 35px Auto 35px";
+    paragraphForCard.innerHTML = `${x.summary}`;
+
+    if (x.image != null) {
+      imageForCard.setAttribute("src", x.image.medium);
+    }
+
+    buttonForCard.appendChild(tagName);
+    let buttonForShow = document.querySelectorAll(".buttonForCard");
+    for (let j = 0; j < buttonForShow.length; j++) {
+      buttonForShow[j].addEventListener("click", () => {
+        url = `https://api.tvmaze.com/shows/${alShows[j].id}/episodes`;
+        console.log(url);
+      });
+    }
+  });
 }
 
-function makePageForEpisodes(episodeList) {
-  const rootElem = document.getElementById("root");
-  rootElem.textContent = `Got ${episodeList.length} episode(s)`;
+let showsSelect = document.getElementById("shows");
+
+for (let i = 0; i < alShows.length; i++) {
+  let showOptions = document.createElement("option");
+  showsSelect.appendChild(showOptions);
+  showOptions.setAttribute(
+    "value",
+    `https://api.tvmaze.com/shows/${alShows[i].id}/episodes`
+  );
+  showOptions.setAttribute("class", "option-show");
+  showOptions.innerText = alShows[i].name;
 }
+let optionsOfShows = document.querySelectorAll(".option-show");
 
-window.onload = setup;
+showsSelect.addEventListener("change", () => {
+  container.style.cssText = "display:none";
+  if (showsSelect.value == 0) {
+    container.style.cssText = "display:none";
+    return setUp(alShows);
+  } else {
+    container.style.cssText = "display:none";
+    url.shift();
+    url.push(showsSelect.value);
 
-// //You can edit ALL of the code here
-// let body = document.querySelector("body");
-// const searchInput = document.querySelector("input");
-// let result = document.getElementById("result");
-// let section = document.querySelector(".search-wrapper");
-// let selectShow = document.querySelector("#selectShow");
-// let select = document.getElementById("select");
-// let episodesMain = document.getElementById("episodes-main");
-// let url = "";
-
-// body.appendChild(episodesMain);
-
-// episodesMain.style.cssText =
-//   "background-color:silver; display:flex ; width:100% ; height: 100%; flex-wrap: wrap; padding: auto; justify-content:space-around";
-
-// function forEpisodeNumber(x) {
-//   return x > 9 ? x : "0" + x;
-// }
-// let shows = getAllShows();
-
-// console.log(selectShow);
-// let showOptions = document.querySelectorAll(".showOptions");
-// for (let show of shows) {
-//   optionsOfShow = document.createElement("option");
-//   optionsOfShow.innerText = show.name;
-//   selectShow.appendChild(optionsOfShow);
-//   optionsOfShow.setAttribute("value", show.url);
-//   optionsOfShow.setAttribute("class", "showOptions");
-// }
-// for (let valueOption in showOptions) {
-//   valueOption.addEventListener("input", (changeUrl) => {
-//     url = valueOption.value;
-//   });
-// }
-
-// // function chgangeUrl() {
-// //   url = show.url;
-// // }
-
-// fetch(url)
-//   .then((res) => {
-//     console.log(res);
-//     return res.json();
-//   })
-//   .then((data) => {
-//     console.log(data);
-//     function setup() {
-//       const allEpisodes = data;
-//       makePageForEpisodes(allEpisodes);
-//     }
+    console.log(url);
+  }
+  fetch(url[0])
+    .then((response) => {
+      console.log(response);
+      return response.json();
+    })
+    .then((result) => {
+      console.log(result);
+      container.style.cssText = "display:none";
+      setUp(result);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+});
 
 //     function makePageForEpisodes(episodeList) {
 //       const rootElem = document.getElementById("root");
@@ -80,7 +127,7 @@ window.onload = setup;
 //       let paragraphOfEpisode = document.createElement("article");
 //       divOfEpisodes.appendChild(paragraphOfEpisode);
 //       divOfEpisodes.style.cssText =
-//         "background-color:white ; width:350px ; height: 600px; margin:8px;border-radius: 3%;";
+//         "background-color:white ; width:350px ; height: 600px; margin:8px;border-radius: 3%";
 //       paragraphOfEpisode.style.cssText = "margin:20px; font-size:18px";
 //       titleButOfEpisode.style.cssText =
 //         "width:350px ; margin-top: 0px;  height: 80px ;border-radius: 3% ; font-weight: bold; font-size:20px";
@@ -90,11 +137,7 @@ window.onload = setup;
 //       let number = `S${forEpisodeNumber(episode.season)}E${forEpisodeNumber(
 //         episode.number
 //       )}`;
-//       divOfEpisodes.id = number;
-//       titleButOfEpisode.appendChild(tagName);
-//       let episodeName = `${episode.name} `;
-//       let title = (tagName.innerText = `${episodeName} - ${number}`);
-//       paragraphOfEpisode.innerHTML = `${episode.summary}`;
+//
 //       let options = document.createElement("option");
 
 //       select.appendChild(options);
