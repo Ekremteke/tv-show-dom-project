@@ -10,3 +10,27 @@
     padding: auto;
     justify-content: space-around;
 }
+.paragraphForCard{
+  margin:20px; 
+  font-size:18px;
+}
+.buttonForCard{
+width:350px ; 
+margin-top: 0px;  
+height: 80px ;
+border-radius: 3% ; 
+font-weight: bold; 
+font-size:20px;}
+
+.imageForCard{
+width:280px ; 
+height: 150px;
+margin: 30px 35px Auto 35px;
+}
+.cards {
+background-color: white;
+  width: 350px;
+  height: 600px;
+  margin: 8px;
+  border-radius: 3%
+}
