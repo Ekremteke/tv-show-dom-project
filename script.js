@@ -160,6 +160,7 @@ function showNameButton() {
   for (let j = 0; j < buttonForShow.length; j++) {
     buttonForShow[j].addEventListener("click", () => {
       url = `https://api.tvmaze.com/shows/${alShows[j].id}/episodes`;
+      showsSelect.value = url;
       fetch(url)
         .then((response) => {
           console.log(response);
