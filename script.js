@@ -10,9 +10,6 @@ function forEpisodeNumber(x) {
   return x > 9 ? x : "0" + x;
 }
 
-// xx
-// select episode function
-// xx
 function select(episodes) {
   episodesSelect.innerHTML = "";
   let firstOption = document.createElement("option");
