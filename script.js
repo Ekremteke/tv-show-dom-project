@@ -5,7 +5,6 @@ let episodesSelect = document.getElementById("episodes");
 let searchInput = document.getElementById("search-input");
 let resultOfSearch = document.getElementById("result");
 
-console.log(alShows);
 function forEpisodeNumber(x) {
   return x > 9 ? x : "0" + x;
 }
@@ -50,7 +49,7 @@ function setUp(array) {
 
     container.appendChild(cards);
     cards.style.cssText =
-      "background-color:white ; width:350px ; height: 600px; margin:8px;border-radius: 3%";
+      "background-color:white ; width:350px ; height: 600px; margin:8px;border-radius: 3%; overflow:scroll";
 
     let buttonForCard = document.createElement("button");
     let imageForCard = document.createElement("img");
@@ -96,7 +95,6 @@ search(alShows);
 function search(episodList) {
   searchInput.addEventListener("input", (event) => {
     const value = event.target.value.toLowerCase();
-    console.log(value);
 
     let filterOne = episodList.filter((a) => {
       return (
@@ -105,7 +103,7 @@ function search(episodList) {
       );
     });
     setUp(filterOne);
-    console.log(filterOne);
+
     resultOfSearch.innerHTML =
       "Displaying " +
       filterOne.length +
@@ -135,11 +133,9 @@ showsSelect.addEventListener("change", (event) => {
   } else {
     fetch(event.target.value)
       .then((response) => {
-        console.log(response);
         return response.json();
       })
       .then((result) => {
-        console.log(result);
         setUp(result);
         select(result);
         search(result);
@@ -160,11 +156,9 @@ function showNameButton() {
       showsSelect.value = url;
       fetch(url)
         .then((response) => {
-          console.log(response);
           return response.json();
         })
         .then((result) => {
-          console.log(result);
           setUp(result);
           select(result);
           search(result);
